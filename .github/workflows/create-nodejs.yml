@@ -1,0 +1,29 @@
+name: Build a Nodejs app and push to Docker hubb
+
+on:
+  push:
+     branches:
+        - main
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+      name: Second flow
+      runs-on: ubuntu-latest
+      strategy:
+         matrix:
+            node_version: ['18.x' , '20.x' , '22.x']
+            
+      steps:
+         - name: Checkout repository
+           uses: actions/checkout@v4
+         - name: set up nodejs
+           uses: actions/setup-node@v4
+           with:
+              node_version: ${{matix.node_version}}
+         - name: install dependencies
+           run: |
+             cd dive-react-app
+             npm install
+             npm run lint
+             npm build
